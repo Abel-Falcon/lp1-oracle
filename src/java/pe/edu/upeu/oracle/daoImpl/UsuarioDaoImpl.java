@@ -1,4 +1,3 @@
-
 package pe.edu.upeu.oracle.daoImpl;
 
 import java.sql.Connection;
@@ -12,74 +11,69 @@ import pe.edu.upeu.oracle.dao.UsuarioDao;
 import pe.edu.upeu.oracle.dto.UsuariLogin;
 import pe.edu.upeu.oracle.entity.Usuario;
 
-/**
- *
- * @author Docente
- */
-public class UsuarioDaoImpl implements UsuarioDao{
-private PreparedStatement ps;
-private ResultSet rs;
-private Connection cx= null;
+public class UsuarioDaoImpl implements UsuarioDao {
+    private Connection cx;
 
-    @Override
-    public int createUsuario(Usuario usuario) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public int updateUsuario(Usuario usuario) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public int deleteUsuario(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Usuario readUsuario(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public List<Usuario> readAllUsuario() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean buscarUsuario(String username) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public UsuarioDaoImpl() {
+        cx = Conexion.getConexion();
     }
 
     @Override
     public List<UsuariLogin> login(String username, String clave) {
         List<UsuariLogin> lista = new ArrayList<>();
-        String SQL = "SELECT u.idusuario, u.username, e.sexo, r.nombre as rol, p.nombre, p.url, p.icono FROM usuario u " +
-                     "inner join empleado e on u.idempleado = e.idempleado " +
-                     "inner join rol r on u.idrol=r.idrol " +
-                     "inner join rol_privilegios rp on r.idrol = rp.idrol " +
-                     "inner join privilegios p on rp.idprivilegio = p.idprivilegio " +
-                     "where u.username= ? and u.clave=?";
+        String SQL = "SELECT u.username, u.sexo, r.nombre as rol FROM Usuario u "
+                   + "JOIN Rol r ON u.rol_id = r.id WHERE u.username=? AND u.clave=?";
         try {
-            cx = Conexion.getConexion();
-            ps = cx.prepareStatement(SQL);
+            PreparedStatement ps = cx.prepareStatement(SQL);
             ps.setString(1, username);
             ps.setString(2, clave);
-            rs = ps.executeQuery();
-            while(rs.next()){
-                UsuariLogin login = new UsuariLogin();
-                login.setIdusuario(rs.getInt("idusuario"));
-                login.setUsername(rs.getString("username"));
-                login.setRol(rs.getString("rol"));
-                login.setSexo(rs.getString("sexo"));
-                login.setNombrep(rs.getString("nombre"));
-                login.setUrl(rs.getString("url"));
-                login.setIcono(rs.getString("icono"));
-                lista.add(login);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                UsuariLogin ul = new UsuariLogin();
+                ul.setUsername(rs.getString("username"));
+                ul.setSexo(rs.getString("sexo"));
+                ul.setRol(rs.getString("rol"));
+                lista.add(ul);
             }
         } catch (SQLException e) {
-            System.out.println("Error: "+e);
+            System.out.println("Error: " + e);
         }
         return lista;
+    }
+
+    @Override
+    public int createUsuario(Usuario usuario) {
+        // Implementation code...
+        return 0;
+    }
+
+    @Override
+    public int updateUsuario(Usuario usuario) {
+        // Implementation code...
+        return 0;
+    }
+
+    @Override
+    public int deleteUsuario(int id) {
+        // Implementation code...
+        return 0;
+    }
+
+    @Override
+    public Usuario readUsuario(int id) {
+        // Implementation code...
+        return null;
+    }
+
+    @Override
+    public List<Usuario> readAllUsuario() {
+        // Implementation code...
+        return null;
+    }
+
+    @Override
+    public boolean buscarUsuario(String username) {
+        // Implementation code...
+        return false;
     }
 }

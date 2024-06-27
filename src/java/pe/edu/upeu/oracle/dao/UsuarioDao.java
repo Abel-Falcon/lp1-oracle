@@ -4,10 +4,6 @@ import java.util.List;
 import pe.edu.upeu.oracle.dto.UsuariLogin;
 import pe.edu.upeu.oracle.entity.Usuario;
 
-/**
- *
- * @author Docente
- */
 public interface UsuarioDao {
     public int createUsuario(Usuario usuario);
     public int updateUsuario(Usuario usuario);
